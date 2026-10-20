@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>일정 맞추기</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <h1>일정 맞추기</h1>
+      <p class="sub" id="range-label"></p>
+    </header>
+
+    <!-- 1단계: 이름 입력 -->
+    <section id="view-login" class="card">
+      <label for="name-input">이름</label>
+      <div class="row">
+        <input id="name-input" type="text" placeholder="이름을 입력하세요" maxlength="20" autocomplete="off" />
+        <button id="enter-btn" class="primary">입장</button>
+      </div>
+      <p class="hint">같은 이름으로 다시 들어오면 이전에 고른 날짜를 이어서 수정할 수 있어요.</p>
+    </section>
+
+    <!-- 2단계: 내 가능 날짜 선택 -->
+    <section id="view-pick" class="card hidden">
+      <div class="row space">
+        <div><strong id="me-label"></strong> 님, 가능한 날짜를 눌러주세요</div>
+        <button id="logout-btn" class="ghost">이름 바꾸기</button>
+      </div>
+
+      <div class="toolbar">
+        <button id="all-btn" class="chip">전체 선택</button>
+        <button class="chip week-btn" data-week="0">1주차 전체</button>
+        <button class="chip week-btn" data-week="1">2주차 전체</button>
+        <button class="chip week-btn" data-week="2">3주차 전체</button>
+        <button id="clear-btn" class="chip danger">모두 해제</button>
+      </div>
+
+      <div class="calendar" id="pick-calendar"></div>
+
+      <div class="row space">
+        <span id="pick-count" class="muted"></span>
+        <button id="save-btn" class="primary">저장</button>
+      </div>
+      <p id="save-status" class="status"></p>
+    </section>
+
+    <!-- 3단계: 전체 종합 -->
+    <section id="view-summary" class="card hidden">
+      <div class="row space">
+        <h2>전체 종합 <span id="people-count" class="muted"></span></h2>
+        <button id="refresh-btn" class="ghost">새로고침</button>
+      </div>
+      <div id="best-dates" class="best"></div>
+      <div class="legend" id="legend"></div>
+      <div class="calendar summary" id="summary-calendar"></div>
+      <div id="people-list" class="people"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
