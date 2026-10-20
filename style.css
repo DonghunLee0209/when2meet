@@ -102,3 +102,12 @@ button.ghost { background: transparent; color: var(--muted); }
   .day { min-height: 56px; padding: 4px; }
   .summary .names { display: none; }
 }
+
+/* 로딩 스피너 */
+.spinner {
+  display: inline-block; width: 12px; height: 12px;
+  border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: 50%; vertical-align: -2px; margin-right: 2px;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -173,7 +173,8 @@
   async function save() {
     const btn = $("save-btn");
     btn.disabled = true;
-    setStatus("저장 중…");
+    btn.innerHTML = '<span class="spinner"></span> 저장 중…';
+    setStatus("");
     let error = null;
     try {
       ({ error } = await withTimeout(sb.from("availability").upsert(
@@ -182,6 +183,7 @@
       ), 8000));
     } catch (e) { error = e; }
     btn.disabled = false;
+    btn.textContent = "저장";
     if (error) { setStatus("저장 실패: " + (error.message || error), "err"); return; }
     setStatus("저장됐어요 ✓", "ok");
     await loadAll();
@@ -193,14 +195,24 @@
   }
 
   // ---------- 입장 / 전환 ----------
+  let entering = false;
   async function enter() {
     const name = nameInput.value.trim();
     if (!name) { nameInput.focus(); return; }
+    if (entering) return;
+    entering = true;
+    const btn = $("enter-btn");
+    btn.disabled = true; nameInput.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> 불러오는 중…';
+
     me = name;
     localStorage.setItem("w2m_name", me);
     $("me-label").textContent = me;
 
     await loadAll();
+    entering = false;
+    btn.disabled = false; nameInput.disabled = false;
+    btn.textContent = "입장";
     const mine = all.find((p) => p.name === me);
     selected = new Set((mine?.dates || []).filter((x) => ISO.includes(x)));
 
@@ -220,7 +232,12 @@
     nameInput.focus();
   });
   $("save-btn").addEventListener("click", save);
-  $("refresh-btn").addEventListener("click", loadAll);
+  $("refresh-btn").addEventListener("click", async () => {
+    const b = $("refresh-btn");
+    b.disabled = true; b.innerHTML = '<span class="spinner"></span> 불러오는 중…';
+    await loadAll();
+    b.disabled = false; b.textContent = "새로고침";
+  });
 
   // 이전 이름 기억
   const remembered = localStorage.getItem("w2m_name");
